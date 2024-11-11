@@ -1,41 +1,41 @@
 class Validator {
-    constructor() {
-        // this.options = {...props};
-    };
+//   constructor() {
+//     // this.options = {...props};
+//   }
 
-    postalCode() { // def postalCode
-        this.startsWith = 'ZIP';
-        return this;
-    };
+  postalCode() { // def postalCode
+    this.startsWith = 'ZIP';
+    return this;
+  }
 
-    setPostalCodeLengthConstraint(mn, mx = Infinity) {
-        this.minLength = mn;
-        this.maxLength = mx;
-        return this;
-    };
+  setPostalCodeLengthConstraint(mn, mx = Infinity) {
+    this.minLength = mn;
+    this.maxLength = mx;
+    return this;
+  }
 
-    isCode(str) {
-        return `${str}`.startsWith(this.startsWith);
-    };
+  isCode(str) {
+    return `${str}`.startsWith(this.startsWith);
+  }
 
-    isLengthValid(str) {
-        if (this.minLength === undefined) {
-            return true;
-        }
-        return `${str}`.split('_').at(1).length >= this.minLength && 
-        `${str}`.split('_').at(1).length <= this.maxLength;
-    };
+  isLengthValid(str) {
+    if (this.minLength === undefined) {
+      return true;
+    }
+    return `${str}`.split('_').at(1).length >= this.minLength
+        && `${str}`.split('_').at(1).length <= this.maxLength;
+  }
 
-    isValid(str) {
-        return this.isCode(str) && this.isLengthValid(str);
-        // return str.startsWith('ZIP');
-    };
-};
+  isValid(str) {
+    return this.isCode(str) && this.isLengthValid(str);
+    // return str.startsWith('ZIP');
+  }
+}
 
 // const val = new Validator();
 // console.log(val.postalCode());
 const v = new Validator();
-console.log(v)
+console.log(v);
 
 const postalCodeSchema1 = v.postalCode();
 console.log(postalCodeSchema1);
