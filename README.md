@@ -114,7 +114,7 @@ ipAddressSchema.isValid('256.0.0.1'); // false
 
 ## 4 задача
 
-Вам необходимо расширить функциональность экземпляра валидатора IP-адресов, добавив к нему метод `setIpAddressLengthConstraint()`. Этот метод принимает один обязательный аргумент - минимальную длину IP-адреса, а также один необязательный аргумент - максимальную длину IP-адреса. При вызове метода `setIpAddressLengthConstraint()`, он добавляет дополнительную проверку, которая будет выполняться при вызове метода `isValid()`.
+Вам необходимо расширить функциональность экземпляра валидатора IP-адресов, добавив к нему метод `ipAddressValues()`. Метод проверяет корректность указанных значений в IPv4 адресе (4 числа от 0 до 255 каждое). При вызове метода `ipAddressValues()`, он добавляет дополнительную проверку, которая будет выполняться при вызове метода `isValid()`.
 
 **Условия**
 
@@ -123,7 +123,7 @@ ipAddressSchema.isValid('256.0.0.1'); // false
 
 **Методы**
 
-- Метод `setIpAddressLengthConstraint()`, который вызывается у экземпляра `ipAddress()`. Он добавляет еще одну проверку
+- Метод `ipAddressValues()`, который вызывается у экземпляра `ipAddress()`. Он добавляет еще одну проверку
 
 ```javascript
 const v = new Validator();
@@ -131,16 +131,16 @@ const v = new Validator();
 const ipAddressSchema1 = v.ipAddress();
 ipAddressSchema1.isValid('27.168.0.1'); // true
 
-const ipAddressSchema2 = v.ipAddress().setIpAddressLengthConstraint(8);
-ipAddressSchema2.isValid('27.0.0.1.4'); // true
-ipAddressSchema2.isValid('192.168'); // false
+const ipAddressSchema2 = v.ipAddress().ipAddressValues();
+ipAddressSchema2.isValid('27.0.0.1.4'); // false
+ipAddressSchema2.isValid('192.168.0.270'); // false
 
-const ipAddressSchema3 = v.ipAddress().setIpAddressLengthConstraint(4, 6);
+const ipAddressSchema3 = v.ipAddress().ipAddressValues();
 ipAddressSchema3.isValid('27.16.0.55'); // true
 ipAddressSchema3.isValid('8.8.8.8'); // false
 ```
 
-После добавления метода `setIpAddressLengthConstraint()`, экземпляр валидатора IP-адресов будет проверять, чтобы входной IP-адрес начинался с указанного префикса.
+После добавления метода `ipAddressValues()`, экземпляр валидатора IP-адресов будет проверять, чтобы входной IP-адрес начинался с указанного префикса.
 
 ## 5 задача
 

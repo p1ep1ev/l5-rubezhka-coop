@@ -47,22 +47,25 @@ test('step4', () => {
   const ipAddressSchema1 = v.ipAddress();
   assert.equal(ipAddressSchema1.isValid('27.168.0.1'), true);
 
-  const ipAddressSchema2 = v.ipAddress().setIpAddressLengthConstraint(7);
-  assert.equal(ipAddressSchema2.isValid('27.0.0.1.4'), true);
-  assert.equal(ipAddressSchema2.isValid('192.168'), false);
+  const ipAddressSchema2 = v.ipAddress().ipAddressValues();
+  assert.equal(ipAddressSchema2.isValid('27.0.0.1'), true);
+  assert.equal(ipAddressSchema2.isValid('192.168.0.1'), false);
 
-  const ipAddressSchema3 = v.ipAddress().setIpAddressLengthConstraint(4, 6);
-  assert.equal(ipAddressSchema3.isValid('27.16.0'), true);
+  const ipAddressSchema3 = v.ipAddress().ipAddressValues();
+  assert.equal(ipAddressSchema3.isValid('27.16.0'), false);
   assert.equal(ipAddressSchema3.isValid('8.8.8.8'), false);
+  assert.equal(ipAddressSchema3.isValid('27.255.139.8'), true);
 });
 
 test('step5', () => {
   const v = new Validator();
   const userSchema = v.user().shape({
     postalCode: v.postalCode().setPostalCodeLengthConstraint(7),
-    ipAddress: v.ipAddress().setIpAddressLengthConstraint(4, 6),
+    ipAddress: v.ipAddress().ipAddressValues(),
   });
 
-  assert.equal(userSchema.isValid({ postalCode: 'ZIP_6789056889', ipAddress: '27.16.0' }), true);
-  assert.equal(userSchema.isValid({ postalCode: 56121, ipAddress: '10.0.0.1' }), false);
+  assert.equal(userSchema.isValid({ postalCode: 'ZIP_6789056889', ipAddress: '27.16.0.255' }), true);
+  assert.equal(userSchema.isValid({ postalCode: 'ZIP_6789054', ipAddress: '10.0.0.1' }), false);
+  assert.equal(userSchema.isValid({ postalCode: 'ZIP_6789', ipAddress: '27.0.0.1' }), false);
+  assert.equal(userSchema.isValid({ postalCode: 'ZIP_6789', ipAddress: '192.0.0.1' }), false);
 });
